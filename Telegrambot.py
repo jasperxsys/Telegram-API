@@ -12,7 +12,7 @@ def greet(message):
 
 @bot.message_handler(commands=['website'])
 def greet(message):
-    bot.reply_to(message, "www.google.nl")
+    bot.reply_to(message, "www.example.nl")
     print(message.chat.id)
 
 @bot.message_handler(commands=['token'])
@@ -25,7 +25,6 @@ def greet(message):
     useridJasper = bot.get_chat_member(message.chat.id, 1236443148)
     struserIdJohn = str(userIdJohn)
     struserIdJasper = str(useridJasper)
-    struserIdJasper.replace("{'user': ", "")
     print(struserIdJasper)
     # print(struserIdJasper)
     # replaced_stridjasper = struserIdJasper.replace("False", "false")
