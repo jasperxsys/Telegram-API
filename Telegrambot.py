@@ -1,4 +1,3 @@
-from ast import Str
 import os
 import telebot
 import json
