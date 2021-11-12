@@ -5,12 +5,17 @@ import json
 API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
 
-@bot.message_handler(commands=['Greet'])
+@bot.message_handler(commands=['greet'])
 def greet(message):
     bot.reply_to(message, "Hey")
     print(message.chat.id)
 
-@bot.message_handler(commands=['Token'])
+@bot.message_handler(commands=['website'])
+def greet(message):
+    bot.reply_to(message, "www.google.nl")
+    print(message.chat.id)
+
+@bot.message_handler(commands=['token'])
 def greet(message):
     bot.send_message(message.chat.id, "STFY")
     user_id = message.from_user.id
@@ -20,9 +25,13 @@ def greet(message):
     useridJasper = bot.get_chat_member(message.chat.id, 1236443148)
     struserIdJohn = str(userIdJohn)
     struserIdJasper = str(useridJasper)
+    struserIdJasper.replace("{'user': ", "")
     print(struserIdJasper)
+    # print(struserIdJasper)
+    # replaced_stridjasper = struserIdJasper.replace("False", "false")
     with open('data.json', 'a') as outfile:
         outfile.write(struserIdJasper + "\n")
+        # outfile.write(replaced_stridjasper + "\n")
     
 
 
@@ -44,10 +53,13 @@ def send_username(message):
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message):
-    User_id = message.from_user.id
+    user_id = message.from_user.id
     bot.send_message(message.chat.id, message.from_user.id)
-    
-    
+    joined_user_id = bot.get_chat_member(message.chat.id, user_id)
+    string_joined_user_id = str(joined_user_id)
+    print(string_joined_user_id)
+    with open('data.json', 'a') as outfile:
+        outfile.write(string_joined_user_id + "\n")
 
 
 
