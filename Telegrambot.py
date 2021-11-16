@@ -1,6 +1,7 @@
 import os
 import telebot
 import json
+import csv
 
 API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
@@ -24,7 +25,6 @@ def greet(message):
     else:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.last_name)
 
-
 @bot.message_handler(commands=['token'])
 def greet(message):
     bot.send_message(message.chat.id, "STFY")
@@ -42,6 +42,25 @@ def greet(message):
         outfile.write(struserIdJasper + "\n")
         # outfile.write(replaced_stridjasper + "\n")
     
+@bot.message_handler(commands=['test'])
+def test(message):
+    # bot.send_message(message.chat.id, "testtest")
+    user_id = message.from_user.id
+    user_firstname = message.from_user.first_name
+    user_lastname = message.from_user.last_name
+    user_username = message.from_user.username
+    arrayuser = [user_id,user_username, user_firstname, user_lastname]
+    for i in range(len(arrayuser)):
+        if arrayuser[i] == None:
+            arrayuser[i] = "None"
+    header = ["id", "username", "firstname", "lastname"]
+    with open('data.csv', 'a') as file:
+        writer = csv.writer(file)
+        if file.tell() == 0:
+            writer.writerow(header)
+        writer.writerow(arrayuser)  
+        file.close()
+
 
 
 def username(message):
@@ -58,20 +77,34 @@ def send_username(message):
     # for i in range (get_members):
     #     print(i)
     # print(bot.get_chat_member(-619751024, 1236443148))
+@bot.message_handler(content_types=['new_chat_members'])
+def welcome_function(message):
+    if message.from_user.username != None:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
+    elif message.from_user.first_name != None:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
+    else:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.last_name)
+    bot_func(message)
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message):
+    print("Welkom function")
     user_id = message.from_user.id
-    bot.send_message(message.chat.id, message.from_user.id)
-    joined_user_id = bot.get_chat_member(message.chat.id, user_id)
-    string_joined_user_id = str(joined_user_id)
-    print(string_joined_user_id)
-    with open('data.json', 'a') as outfile:
-        outfile.write(string_joined_user_id + "\n")
+    user_firstname = message.from_user.first_name
+    user_lastname = message.from_user.last_name
+    user_username = message.from_user.username
+    arrayuser = [user_id,user_username, user_firstname, user_lastname]
+    for i in range(len(arrayuser)):
+        if arrayuser[i] == None:
+            arrayuser[i] = "None"
+    header = ["id", "username", "firstname", "lastname"]
+    with open('data.csv', 'a') as file:
+        writer = csv.writer(file)
+        if file.tell() == 0:
+            writer.writerow(header)
+        writer.writerow(arrayuser)  
+        file.close()
 
-@bot.message_handler(content_types=['new_chat_members'])
-def welcome_function(message):
-    bot.send_message(message.chat.id)
 
-
-bot.polling() 
+bot.infinity_polling(timeout=10, long_polling_timeout = 5) 
