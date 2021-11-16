@@ -15,6 +15,16 @@ def greet(message):
     bot.reply_to(message, "www.example.nl")
     print(message.chat.id)
 
+@bot.message_handler(commands=['members'])
+def greet(message):
+    if message.from_user.username != None:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
+    elif message.from_user.first_name != None:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
+    else:
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.last_name)
+
+
 @bot.message_handler(commands=['token'])
 def greet(message):
     bot.send_message(message.chat.id, "STFY")
@@ -44,7 +54,6 @@ def username(message):
 @bot.message_handler(func=username)
 def send_username(message):
     bot.send_message(message.chat.id, message.from_user.id)
-    print(bot.get_chat_members_count(message.chat.id))
     get_members = bot.get_chat_members_count(message.chat.id)
     # for i in range (get_members):
     #     print(i)
@@ -60,7 +69,9 @@ def bot_func(message):
     with open('data.json', 'a') as outfile:
         outfile.write(string_joined_user_id + "\n")
 
-
+@bot.message_handler(content_types=['new_chat_members'])
+def welcome_function(message):
+    bot.send_message(message.chat.id)
 
 
 bot.polling() 
