@@ -20,10 +20,8 @@ def greet(message):
 def greet(message):
     if message.from_user.username != None:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
-    elif message.from_user.first_name != None:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
     else:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.last_name)
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
 
 @bot.message_handler(commands=['token'])
 def greet(message):
@@ -81,10 +79,8 @@ def send_username(message):
 def welcome_function(message):
     if message.from_user.username != None:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
-    elif message.from_user.first_name != None:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
     else:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.last_name)
+        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
     bot_func(message)
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
