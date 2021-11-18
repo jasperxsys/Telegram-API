@@ -1,14 +1,18 @@
 import os
 import telebot
 import csv
+import datetime
 
 API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
 
 @bot.message_handler(commands=['greet'])
 def greet(message):
-    bot.reply_to(message, "Hey")
-    print(message.chat.id)
+    # bot.reply_to(message, "Hey")
+    # Converting datetime object to string
+    dateTimeObj = datetime.datetime.now()
+    timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S)")
+    print('Current Timestamp : ', timestampStr)
 
 @bot.message_handler(commands=['website'])
 def greet(message):
@@ -98,11 +102,13 @@ def bot_func(message, status):
     user_firstname = message.from_user.first_name
     user_lastname = message.from_user.last_name
     user_username = message.from_user.username
-    arrayuser = [user_id,user_username, user_firstname, user_lastname, status]
+    user_timestamp = datetime.datetime.now()
+    user_timestamp_string = user_timestamp.strftime("%d-%b-%Y (%H:%M:%S)")
+    arrayuser = [user_id,user_username, user_firstname, user_lastname, status, user_timestamp_string]
     for i in range(len(arrayuser)):
         if arrayuser[i] == None:
             arrayuser[i] = "None"
-    header = ["id", "username", "firstname", "lastname", "status"]
+    header = ["id", "username", "firstname", "lastname", "status", "timestamp"]
     with open('data.csv', 'a') as file:
         writer = csv.writer(file)
         if file.tell() == 0:
