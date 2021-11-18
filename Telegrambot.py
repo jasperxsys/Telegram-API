@@ -1,6 +1,5 @@
 import os
 import telebot
-import json
 import csv
 
 API_KEY = os.getenv('API_KEY')
@@ -77,24 +76,33 @@ def send_username(message):
     # print(bot.get_chat_member(-619751024, 1236443148))
 @bot.message_handler(content_types=['new_chat_members'])
 def welcome_function(message):
+    print("joined")
+    status = "Joined"
     if message.from_user.username != None:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
     else:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
-    bot_func(message)
+    bot_func(message, status)
+
+@bot.message_handler(content_types=['left_chat_member'])
+def welcome_function(message):
+    print("left")
+    status = "Left"
+    bot_func(message, status)
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
-def bot_func(message):
-    print("Welkom function")
+def bot_func(message, status):
+    print("csv func")
+    print(status)
     user_id = message.from_user.id
     user_firstname = message.from_user.first_name
     user_lastname = message.from_user.last_name
     user_username = message.from_user.username
-    arrayuser = [user_id,user_username, user_firstname, user_lastname]
+    arrayuser = [user_id,user_username, user_firstname, user_lastname, status]
     for i in range(len(arrayuser)):
         if arrayuser[i] == None:
             arrayuser[i] = "None"
-    header = ["id", "username", "firstname", "lastname"]
+    header = ["id", "username", "firstname", "lastname", "status"]
     with open('data.csv', 'a') as file:
         writer = csv.writer(file)
         if file.tell() == 0:
