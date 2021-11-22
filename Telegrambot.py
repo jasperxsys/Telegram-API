@@ -18,10 +18,6 @@ def greet(message):
 @bot.message_handler(content_types=['new_chat_members'])
 def welcome_function(message):
     status = "Joined"
-    if message.from_user.username != None:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
-    else:
-        bot.send_message(message.chat.id, "Welcome " + message.from_user.first_name)
     bot_func(message, status)
 
 @bot.message_handler(content_types=['left_chat_member'])
