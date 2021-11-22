@@ -17,7 +17,6 @@ def greet(message):
     
 @bot.message_handler(content_types=['new_chat_members'])
 def welcome_function(message):
-    print("joined")
     status = "Joined"
     if message.from_user.username != None:
         bot.send_message(message.chat.id, "Welcome " + message.from_user.username)
@@ -27,14 +26,11 @@ def welcome_function(message):
 
 @bot.message_handler(content_types=['left_chat_member'])
 def welcome_function(message):
-    print("left")
     status = "Left"
     bot_func(message, status)
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message, status):
-    print("csv func")
-    print(status)
     user_id = message.from_user.id
     user_firstname = message.from_user.first_name
     user_lastname = message.from_user.last_name
