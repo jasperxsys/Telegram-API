@@ -25,7 +25,7 @@ def welcome_function(message):
     bot_func(message, status)
 
 @bot.message_handler(content_types=['left_chat_member'])
-def welcome_function(message):
+def leave_function(message):
     status = "Left"
     bot_func(message, status)
 
