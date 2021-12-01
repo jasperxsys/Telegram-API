@@ -5,15 +5,6 @@ import datetime
 
 API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
-
-@bot.message_handler(commands=['website'])
-def greet(message):
-    bot.reply_to(message, "www.example.nl")
-    print(message.chat.id)
-
-@bot.message_handler(commands=['token'])
-def greet(message):
-    bot.send_message(message.chat.id, "STFY")
     
 @bot.message_handler(content_types=['new_chat_members'])
 def welcome_function(message):
@@ -36,7 +27,7 @@ def bot_func(message, status):
     arrayuser = [user_id,user_username, user_firstname, user_lastname, status, user_timestamp_string]
     for i in range(len(arrayuser)):
         if arrayuser[i] == None:
-            arrayuser[i] = "None"
+            arrayuser[i] = "N/A"
     header = ["id", "username", "firstname", "lastname", "status", "timestamp"]
     with open('data.csv', 'a') as file:
         writer = csv.writer(file)
@@ -44,6 +35,5 @@ def bot_func(message, status):
             writer.writerow(header)
         writer.writerow(arrayuser)  
         file.close()
-
 
 bot.infinity_polling(timeout=10, long_polling_timeout = 5) 
